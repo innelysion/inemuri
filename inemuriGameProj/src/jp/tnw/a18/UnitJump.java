@@ -1,0 +1,236 @@
+package jp.tnw.a18;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+
+public class UnitJump {
+
+	//■VALUE■
+	// カウンター関係
+	final double TIME_UNIT = 1.0 / 60.0;
+
+	// 画像読み込む処理関係
+	final int ARRIMAGE_MAX = 100;
+	BufferedImage Image;
+	BufferedImage[] arrImage = new BufferedImage[ARRIMAGE_MAX];
+	int arrImageQty;
+	String strFileName;
+	int intFileType;
+	int intWidthBlockQty;
+	int intHeightBlockQty;
+
+	// アニメーション関係
+	final int UNIT_MAX = 100;
+	double dblTimerG;									//Timer for Anime & Generation
+	double[] dblTimerA = new double[UNIT_MAX];
+	boolean blnAniSwitch[] = new boolean[UNIT_MAX];		// アニメの実行スイッチ
+	int intOffsetIndex[] = new int[UNIT_MAX];			// コマ
+	double dblOffsetX[] = new double[UNIT_MAX];			// X座標補正
+	double dblOffsetY[] = new double[UNIT_MAX];			// Y座標補正
+	double dblSpdX[] = new double[UNIT_MAX];			// X速度
+	double dblSpdY[] = new double[UNIT_MAX];			// Y速度
+	double dblAccSpdX[] = new double[UNIT_MAX];			// X加速度
+	double dblAccSpdY[] = new double[UNIT_MAX];			// Y加速度
+	int intFlag[] = new int[UNIT_MAX];						// フラグ
+	double[] dblJumpSpd = new double[UNIT_MAX];
+
+	//■CONSTRUCTOR■
+	// デフォルト
+	UnitJump() {
+
+		//
+
+	}
+
+	// 結合画像
+	UnitJump(String filename, String type, int widthblock, int heightblock) {
+
+		strFileName = filename;
+		intFileType = 1;
+		intWidthBlockQty = widthblock;
+		intHeightBlockQty = heightblock;
+		for (int i = 0; i < UNIT_MAX; i++){
+
+			dblOffsetX[i] = -1000;			// X座標補正
+			dblOffsetY[i] = -1000;			// Y座標補正
+			dblJumpSpd[i] = -680 + Math.random() * 50;
+
+		}
+
+	}
+
+	// 配列画像 0から99まで sample : filename_00 filename_08 filename_97
+	UnitJump(String filename, String type, int fileqty) {
+
+		strFileName = filename;
+		intFileType = 2;
+		arrImageQty = fileqty;
+		for (int i = 0; i < UNIT_MAX; i++){
+
+			dblOffsetX[i] = -1000;
+			dblOffsetY[i] = -1000;
+			dblJumpSpd[i] = -680 + Math.random() * 50;
+
+		}
+
+	}
+
+
+	// ■LOAD RESOURCE■
+	public void loadImage() {
+		try {
+
+			if (intFileType == 1) {
+
+				Image = ImageIO.read(getClass().getResource(strFileName + ".png"));
+
+			} else if (intFileType == 2) {
+
+				String num;
+				for (int i = 0; i < arrImageQty; i++) {
+
+					num = (i < 10) ? "0" + i : "" + i;// ファイル名の順番が10に足りない場合0をつく
+					arrImage[i] = ImageIO.read(getClass().getResource(strFileName + "_" + num + ".png"));
+
+				}
+
+			}
+
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		}
+	}
+
+	// ■IMAGE■
+	public void drawImage(Graphics2D Graphic, JFrame Window, int x, int y) {
+
+		if (intFileType == 1) {
+
+			for (int i = 0; i < UNIT_MAX; i++){
+
+				// indexをいじってアニメーション
+				// 一コマの幅と高さを計算する
+				int blockw = Image.getWidth() / intWidthBlockQty;
+				int blockh = Image.getHeight() / intHeightBlockQty;
+				int indexw = (intOffsetIndex[i] % intWidthBlockQty == 0) ?
+							 blockw * (intWidthBlockQty - 1) :
+							 blockw * ((intOffsetIndex[i] % intWidthBlockQty) - 1);
+				int indexh = (intOffsetIndex[i] % intWidthBlockQty == 0) ?
+							 blockh * (intOffsetIndex[i] / intWidthBlockQty - 1) :
+							 blockh * (intOffsetIndex[i] / intWidthBlockQty);
+
+				// 画像を表示する
+				Graphic.drawImage(Image,
+				x + (int)dblOffsetX[i]		   , y + (int)dblOffsetY[i],
+				x + (int)dblOffsetX[i] + blockw, y + (int)dblOffsetY[i] + blockh,
+				indexw         , indexh,
+				indexw + blockw, indexh + blockh,
+				Window);
+
+			}
+
+		} else if (intFileType == 2) {
+
+			for (int i = 0; i < UNIT_MAX; i++){
+				// indexをいじってアニメーション
+				Graphic.drawImage(arrImage[intOffsetIndex[i]], x + (int)dblOffsetX[i], y + (int)dblOffsetY[i], Window);
+			}
+
+		}
+
+	}
+
+	// ■REQUEST■
+	public void request() {
+
+		dblTimerG = dblTimerG - TIME_UNIT;
+		if(dblTimerG < 0){
+			dblTimerG = 0.01;
+
+			for(int i = 0;i < UNIT_MAX;i++){
+				if(intFlag[i] == 0){			//ONLY FOR WATING OBJECT
+
+					intOffsetIndex[i] = 21;
+					dblOffsetX[i] 	= 300 + Math.random() * 50;
+					dblOffsetY[i] 	= 680;
+					dblSpdX[i] 	= 200;
+					dblSpdY[i] 	= -680;
+					dblAccSpdX[i] 	= 0;
+					dblAccSpdY[i] 	= 340;
+					intFlag[i] = 1;
+
+					break;
+				}	//if end
+
+			}		//for end
+
+		}
+
+	}
+
+	// ■UPDATE■
+
+	public void update() {
+
+
+		request();
+		for(int i = 0;i < UNIT_MAX;i++){
+
+			if(dblTimerA[i] % 8 == 0){
+
+				intOffsetIndex[i] = ( intOffsetIndex[i] > 29 ) ? 21 : intOffsetIndex[i] + 1;
+
+			}
+			dblTimerA[i]++;
+
+			if(intFlag[i] != 0){
+
+				dblSpdX[i] = dblSpdX[i] + TIME_UNIT * dblAccSpdX[i];
+				dblOffsetX[i] = dblOffsetX[i] + TIME_UNIT * dblSpdX[i];
+
+				dblSpdY[i] = dblSpdY[i] + TIME_UNIT * dblAccSpdY[i];
+				dblOffsetY[i] = dblOffsetY[i] + TIME_UNIT * dblSpdY[i];
+
+			}//if end
+
+			if((dblOffsetX[i] > 1240 || dblOffsetX[i] < -20) && intFlag[i] == 1){
+
+				dblSpdX[i] = -dblSpdX[i];
+
+			}
+
+			if(dblOffsetY[i] > 680 && dblSpdY[i] > 0 && intFlag[i] == 1){
+
+				dblJumpSpd[i] /= 1.3;
+				dblSpdY[i] 	= dblJumpSpd[i];
+				if(dblJumpSpd[i] > -40){
+
+					intFlag[i] = 2;
+
+				}
+			}
+
+			if(intFlag[i] == 2){
+
+				dblSpdY[i] 	= 0;
+				dblAccSpdX[i] 	= 0;
+				dblAccSpdY[i] 	= 0;
+
+			}
+
+		}//for end
+
+	}
+
+	// ■DISPOSE■
+	public void dispose() {
+
+	}
+
+}
