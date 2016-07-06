@@ -23,7 +23,7 @@ public class UnitCircle {
 	int intHeightBlockQty;
 
 	// アニメーション関係
-	final int UNIT_MAX = 8;
+	final int UNIT_MAX = 150;
 	double dblTimerG;									// Timer for Generation
 	double[] dblTimerA = new double[UNIT_MAX];			// Timer for Animation
 	int[] intTimerF = new int[UNIT_MAX];				// Timer for Animation Flag
@@ -134,18 +134,18 @@ public class UnitCircle {
 
 		dblTimerG = dblTimerG - TIME_UNIT;
 		if(dblTimerG < 0){
-			dblTimerG = 0.15;
+			dblTimerG = 0.05;
 
 			for(int i = 0;i < UNIT_MAX;i++){
 				if(intFlag[i] == 0){			//ONLY FOR WATING OBJECT
 
 					intOffsetIndex[i] = 31;
-					dblOffsetX[i] 	= 1280;
-					dblOffsetY[i] 	= 200;
-					dblSpdX[i] 	= -640;
-					dblSpdY[i] 	= 0;
-					dblAccSpdX[i] 	= 0;
-					dblAccSpdY[i] 	= 0;
+					dblOffsetX[i] 	= 620;
+					dblOffsetY[i] 	= 260;
+					dblSpdX[i] 	= 100;
+					dblSpdY[i] 	= 100;
+					dblAccSpdX[i] 	= 300;
+					dblAccSpdY[i] 	= 1;
 					dblAngle[i] = 0;
 					intFlag[i] = 1;
 					intTimerF[i] = 50;
@@ -184,6 +184,10 @@ public class UnitCircle {
 
 			}//if end
 
+			dblAngle[i] += 3;
+			dblAccSpdY[i] += 0.2;
+			dblAccSpdX[i] -= 1;
+			/*
 			switch (intFlag[i]){
 
 			case 1:
@@ -238,7 +242,7 @@ public class UnitCircle {
 			break;
 
 			}
-
+			 */
 
 
 		}//for end
