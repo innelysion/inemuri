@@ -138,8 +138,8 @@ public class Unit {
 				// indexをいじってアニメーション
 				Graphic.drawImage(arrImage[intOffsetIndex[i]], x + (int)dblOffsetX[i], y + (int)dblOffsetY[i], Window);
 			}
-
 		}
+		
 
 	}
 
