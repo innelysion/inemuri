@@ -1,0 +1,74 @@
+//-----------------------------
+//	メインクラス
+//------------------------------
+public class Game_Main implements MouseListener,MouseMotionListener,KeyListener{
+
+
+		//ﾏｳｽｲﾍﾞﾝﾄ初期化をGame_Mainのｺﾝｽﾄﾗｸﾀで実装---------------------
+		Wind.addMouseMotionListener(this);
+		Wind.addMouseListener(this);
+		Wind.addKeyListener(this);
+
+
+	//====== 以下はimplementsで強制的に作成されるﾒｿｯﾄﾞ郡 ==============
+	//	各変数は後で用意すること
+
+	//--------------------------------
+	//		ﾏｳｽ関連(ｸﾘｯｸされたｽﾃｰﾀｽを保存)
+	//--------------------------------				
+	public void mousePressed(MouseEvent e) {
+		mb = e.getButton();// 押されたボタン
+	}
+	//--------------------------------
+	//		ﾏｳｽ関連(ｸﾘｯｸされたｽﾃｰﾀｽを保存)
+	//--------------------------------				
+	public void mouseReleased(MouseEvent e) {
+		mb=0;
+	}
+	
+	//--------------------------------
+	//		ﾏｳｽ関連(ｸﾘｯｸされた座標を保存)
+	//--------------------------------				
+	public void mouseMoved(MouseEvent e) {
+		
+		Insets sz=Wind.getInsets();
+		mx = e.getX()-sz.left;
+		my = e.getY()-sz.top;
+	}
+	//--------------------------------
+	//		ﾏｳｽ関連(その他のﾒｿｯﾄﾞ)
+	//--------------------------------				
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	public void mouseDragged(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
+		
+	//--------------------------------
+//		key関連(押された処理)
+	//--------------------------------				
+		public void keyPressed(KeyEvent e) {
+
+			if(e.getKeyCode()==KeyEvent.VK_UP) key_u=1;
+			if(e.getKeyCode()==KeyEvent.VK_DOWN) key_d=2;
+			if(e.getKeyCode()==KeyEvent.VK_RIGHT) key_r=4;
+			if(e.getKeyCode()==KeyEvent.VK_LEFT) key_l=8;		
+		}
+	//--------------------------------
+//		key関連(離された処理)
+	//--------------------------------				
+		public void keyReleased(KeyEvent e) {
+			if(e.getKeyCode()==KeyEvent.VK_UP) key_u=0;
+			if(e.getKeyCode()==KeyEvent.VK_DOWN) key_d=0;
+			if(e.getKeyCode()==KeyEvent.VK_RIGHT) key_r=0;
+			if(e.getKeyCode()==KeyEvent.VK_LEFT) key_l=0;		
+		}
+	//--------------------------------
+	//		key関連(その他のﾒｿｯﾄﾞ)
+	//--------------------------------
+		public void keyTyped(KeyEvent e) {}	
+
+
+
+
+
+
