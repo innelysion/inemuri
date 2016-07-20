@@ -167,7 +167,7 @@ public class Bullet {
 
 	}
 
-	public void update(int mx, int my, Enemy En) {
+	public void update(int mx, int my, Enemy En, Bomb b) {
 
 		request(mx, my);
 
@@ -193,7 +193,7 @@ public class Bullet {
 
 				if (isHit(dblOffsetX[i], dblOffsetY[i], En.dblOffsetX[j], En.dblOffsetY[j], 20, 20)
 						&& intFlag[i] == 1) {
-
+					b.bomb_req(En.dblOffsetX[j], En.dblOffsetY[j], 0);
 					En.dblOffsetX[j] = -100;
 					En.dblOffsetY[j] = -100;
 					dblSpdX[i] = 1500;

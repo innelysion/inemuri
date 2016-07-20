@@ -195,7 +195,6 @@ public class Enemy {
 			} // for end
 
 		}
-
 	}
 
 	public boolean isHit(double x1, double y1, double x2, double y2, double rad1, double rad2) {
@@ -210,7 +209,7 @@ public class Enemy {
 
 		double dblSaX = Math.abs((x1 + rad1x) - (x2 + rad2x));
 		double dblSaY = Math.abs((y1 + rad1y) - (y2 + rad2y));
-		return (dblSaX <= rad1x + rad2x) && (dblSaY < rad1y + rad2y);
+		return (dblSaX <= rad1x + rad2x) && (dblSaY <= rad1y + rad2y);
 
 	}
 
@@ -242,8 +241,9 @@ public class Enemy {
 			if (isBoxHit(dblOffsetX[i], dblOffsetY[i], jiki.dblOffsetX[0], jiki.dblOffsetY[0], 20, 5, 20, 100)) {
 				dblSpdX[i] = 0;
 				dblSpdY[i] = 0;
+
+				System.out.println("a");
 				if (mb == 1) {
-					b.bomb_req(15, 15, 0);
 					dblOffsetX[i] = 5555;
 					dblOffsetY[i] = 5555;
 					intFlag[i] = 0;

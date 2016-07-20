@@ -96,7 +96,7 @@ public class GameMain implements MouseListener, MouseMotionListener, KeyListener
 
 			teki.update(jiki, mb, b);
 			jiki.update(mx, my);
-			dangan.update(mx, my, teki);
+			dangan.update(mx, my, teki, b);
 			b.UpDate();
 
 			Graphics g2 = offimage.getDrawGraphics();// ｸﾞﾗﾌｨｯｸ初期化
